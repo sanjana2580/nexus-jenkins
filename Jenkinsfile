@@ -32,7 +32,7 @@ pipeline {
         }
         stage('docker build') {
             steps {
-                sh '''
+                sh ''' 
                 docker rmi -f sanjana255/nexus
                 docker rm -f container
                 docker build -t sanjana255/nexus .
