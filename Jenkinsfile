@@ -47,6 +47,14 @@ pipeline {
                 '''
             }
         }
+         stage('docker pull and run') {
+            steps {
+                sh '''
+                docker pull sanjana255/nexus
+                docker run -it -d --name webapp -p 8081:8080 sanjana255/nexus
+                '''
+            }
+        }
 
 
     }
