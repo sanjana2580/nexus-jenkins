@@ -9,21 +9,14 @@ pipeline {
                 sh 'mvn clean'
             }
         }
-        stage('validate') {
-            steps {
-                sh 'mvn validate'
-            }
-        }
-        stage('compile') {
-            steps {
-                sh 'mvn compile'
-            }
-        }
+        
+       
         stage('package') {
             steps {
                 sh 'mvn package'
             }
         }
+
         stage('store artifact into nexus') {
             steps {
                 sh 'mvn -s settings.xml clean deploy'
@@ -37,6 +30,25 @@ pipeline {
                 }
             }
         }
+        stage('docker build') {
+            steps {
+                sh '''
+                docker rmi -f sanjana255/nexus
+                docker rm -f container
+                docker build -t sanjana255/nexus .
+                '''
+            }
+        }
+        stage('docker push') {
+            steps {
+                sh '''
+                docker login -u sanjana255 -p Biradar@24
+                docker push sanjana255/nexus
+                '''
+            }
+        }
+
+
     }
     post {
         always {
